@@ -2,11 +2,11 @@
 
 const assert = require('assert');
 const { MongoClient } = require('mongodb');
-// const MongoDbUserStorage = require('../../src/users/MongoDbUserStorage');
+const MongoDbUserStorage = require('../../src/users/MongoDbUserStorage');
 
-describe.skip('MongoDbUserStorage', function () {
+describe('MongoDbUserStorage', function () {
 
-    const mongoStore = null; // new MongoDbUserStorage('testUsers');
+    const mongoStore = new MongoDbUserStorage('testUsers');
     let createdUser;
 
     let db;

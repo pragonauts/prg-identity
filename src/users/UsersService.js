@@ -17,13 +17,10 @@ const GROUPS_FIELD = 'groups';
 class UsersService {
 
     /**
-     * Creates an instance of UsersService.
-     *
      * @param {*} userStorage
-     * @param {{
-     *      superGroup: string
-     *      adminGroups: string[]
-     * }} [config={}]
+     * @param {Object} [config]
+     * @param {string} [config.superGroup]
+     * @param {string[]} [config.adminGroups]
      * @param {Function} [formatter] - user formatter
      */
     constructor (userStorage, config = {}, formatter = a => a) {

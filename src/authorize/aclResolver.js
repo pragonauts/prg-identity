@@ -60,7 +60,7 @@ function crawlAclTree (resultMap, aclObject, glue, parents, stack = []) {
  * @param {any} aclObject
  * @param {any} [groupTree=null]
  * @param {string} [glue='.']
- * @returns {Map<string, Set<string>>}
+ * @returns {Map.<string, Set.<string>>}
  */
 function aclResolver (aclObject, groupTree = null, glue = '.') {
     const resultMap = new Map();

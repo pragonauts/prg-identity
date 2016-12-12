@@ -21,20 +21,18 @@ class AuthService {
      *
      * @param {Function} getUserByIdFn
      * @param {TokenStorage} [tokenStorage]
-     * @param {{
-     *      acl: Object
-     *      groups: Object
-     *      tokenFactory: function
-     *      passwordReset?: {
-     *          tokenExpiresInMinutes?: number
-     *      },
-     *      superGroup: string
-     *      adminGroups: adminGroups
-     *      cookieKey?: string
-     *      signed?: boolean
-     *      tokenType?: string
-     * }} [options={}]
-     * @param {Map.<string, object|Promise.<Object>>} appsProvider
+     * @param {Object} [options={}]
+     * @param {Object} options.acl
+     * @param {Object} options.groups
+     * @param {Function} options.tokenFactory
+     * @param {Object} [options.passwordReset]
+     * @param {number} [options.passwordReset.tokenExpiresInMinutes]
+     * @param {string} options.superGroup
+     * @param {string[]} options.adminGroups
+     * @param {string} [options.cookieKey]
+     * @param {boolean} [options.signed]
+     * @param {string} [options.tokenType]
+     * @param {Map.<string, Object|Promise.<Object>>} [appsProvider=new Map()]
      */
     constructor (
             getUserByIdFn,
@@ -96,6 +94,9 @@ class AuthService {
         return this._koaMiddlewareFactory.middleware();
     }*/
 
+    /**
+     * @returns {Function}
+     */
     expressMiddleware () {
         if (this._expressMiddlewareFactory === null) {
             this._expressMiddlewareFactory = new ExpressMiddlewareFactory(
@@ -108,6 +109,11 @@ class AuthService {
         return this._expressMiddlewareFactory.middleware();
     }
 
+    /**
+     * @param {string} userId
+     * @param {string} [domain=null]
+     * @returns {Promise.<Object>}
+     */
     createUserToken (userId, domain = null) {
         const options = {};
 
@@ -118,26 +124,55 @@ class AuthService {
         return this.createToken(this.tokensService.TYPE_TOKEN, userId, options);
     }
 
+    /**
+     * @param {string} userId
+     * @returns {Promise}
+     */
     createPasswordResetToken (userId) {
         return this._passwordResetter.createToken(userId);
     }
 
+    /**
+     * @param {string} token
+     * @returns {Promise.<Object|null>}
+     */
     getAndRemovePasswordResetToken (token) {
         return this._passwordResetter.findAndRemoveToken(token);
     }
 
+    /**
+     * @param {string} type
+     * @param {string} [userIdOrGroups=null]
+     * @param {Object} [options]
+     * @param {number} [length]
+     * @returns {Promise}
+     */
     createToken (type, userIdOrGroups = null, options = {}, length = undefined) {
         return this.tokensService.createToken(type, userIdOrGroups, options, length);
     }
 
+    /**
+     * @param {string} type
+     * @param {string} token
+     * @returns {Promise.<Object|null>}
+     */
     getToken (type, token) {
         return this.tokensService.getValidToken(token, type);
     }
 
+    /**
+     * @param {string} token
+     * @returns {Promise}
+     */
     dropToken (token) {
         return this.tokensService.dropToken(token);
     }
 
+    /**
+     * @param {Group[]} [userGroups=[]]
+     * @param {string} [userId=null]
+     * @returns {UserAccessor}
+     */
     createUserAccessor (userGroups = [], userId = null) {
         return new UserAccessor(
             userGroups,

@@ -4,12 +4,12 @@
 
 'use strict';
 
-const aclResolver = require('./src/authorize/aclResolver');
+const AuthService = require('./src/AuthService');
 const AuthenticateService = require('./src/authenticate/AuthenticateService');
 const Authorizator = require('./src/authorize/Authorizator');
+const aclResolver = require('./src/authorize/aclResolver');
 const UserService = require('./src/users/UsersService');
 const UserAccessor = require('./src/users/UserAccessor');
-const AuthService = require('./src/AuthService');
 
 
 module.exports = {
@@ -32,11 +32,8 @@ module.exports = {
     },
 
     get MongoDbUserStorage () {
-
-        throw new Error('NOT COVERED BY TESTS YET');
-
         // lazy load - because of optional dependencies (mongodb)
-        // return require('./src/users/MongoDbUserStorage'); // eslint-disable-line global-require
+        return require('./src/users/MongoDbUserStorage'); // eslint-disable-line global-require
     }
 
 };

@@ -6,11 +6,19 @@
 const domainTools = require('../domainTools');
 
 /**
- *  @typedef {{ group: string, domain?: string }} Group
+ *  @typedef {Object} Group
+ *  @property {string} group
+ *  @property {string} [domain=undefined]
  */
 
 class UserAccessor {
 
+    /**
+     * @param {Group[]} userGroups
+     * @param {string} [byUserId=null]
+     * @param {string} [superGroup=null]
+     * @param {string[]} [adminGroups=null]
+     */
     constructor (userGroups, byUserId = null, superGroup = null, adminGroups = null) {
         this.superGroup = superGroup;
         this.adminGroups = adminGroups;
@@ -18,7 +26,11 @@ class UserAccessor {
         this.setUser(userGroups, byUserId);
     }
 
-    setUser (userGroups, byUserId) {
+    /**
+     * @param {Group[]} [userGroups=null]
+     * @param {string} [byUserId=null]
+     */
+    setUser (userGroups = null, byUserId = null) {
 
         this.byUserId = byUserId;
 
@@ -29,7 +41,7 @@ class UserAccessor {
     }
 
     /**
-     * @param {string} userId
+     * @param {string} [userId]
      * @returns {boolean}
      */
     isMe (userId) {
@@ -68,7 +80,7 @@ class UserAccessor {
      *
      * @param {Group[]} groupList
      * @param {string} personId
-     * @param {boolean} [justManageable]
+     * @param {boolean} [justManageable=false]
      * @returns {Group[]}
      */
     filterGroups (groupList, personId, justManageable = false) {

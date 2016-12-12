@@ -46,6 +46,7 @@ class TokensService {
      * @param {string|number|Group[]} [userIdOrGroups=null]
      * @param {{ expireAt?: Date }} [options={}]
      * @param {number} [length]
+     * @returns {Promise}
      */
     createToken (type, userIdOrGroups = null, options = {}, length = undefined) {
         return this.tokenFactory(type, userIdOrGroups, options, length)
@@ -69,7 +70,7 @@ class TokensService {
     /**
      * @param {string} token
      * @param {any} [requestedType=null]
-     * @returns {TToken}
+     * @returns {Object}
      */
     getValidToken (token, requestedType = null) {
         const match = token.match(TOKEN_ID_REGEX);
@@ -104,7 +105,7 @@ class TokensService {
     /**
      * @param {string} token
      * @param {any} [requestedType=null]
-     * @returns {Promise.<TToken|null>}
+     * @returns {Promise.<Object|null>}
      */
     getAndInvalidateToken (token, requestedType = null) {
         return this.getValidToken(token, requestedType)
