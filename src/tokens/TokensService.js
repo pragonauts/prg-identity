@@ -3,7 +3,6 @@
  */
 'use strict';
 
-const defaultTokenFactory = require('./tokenFactory');
 const types = require('./types');
 
 const TOKEN_ID_REGEX = /^[0-9a-f]{24}/;
@@ -22,7 +21,7 @@ class TokensService {
      * @param {TokenStorage} tokenStorage
      * @param {Function} tokenFactory
      */
-    constructor (tokenStorage, tokenFactory = defaultTokenFactory) {
+    constructor (tokenStorage, tokenFactory) {
 
         this.storage = tokenStorage;
 

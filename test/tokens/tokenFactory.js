@@ -4,7 +4,7 @@
 'use strict';
 
 const assert = require('assert');
-const tokenFactory = require('../../src/tokens/tokenFactory');
+const tokenFactory = require('../../src/tokens/mongodbTokenFactory');
 
 describe('tokenFactory()', function () {
 

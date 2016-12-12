@@ -29,7 +29,7 @@ function createToken (id, userIdOrGroups, type, options, token) {
     }, options);
 }
 
-function tokenFactory (type, userIdOrGroups = null, options = {}, length = TOKEN_SIZE) {
+function mongodbTokenFactory (type, userIdOrGroups = null, options = {}, length = TOKEN_SIZE) {
 
     if (typeof options.token === 'string') {
 
@@ -67,4 +67,4 @@ function tokenFactory (type, userIdOrGroups = null, options = {}, length = TOKEN
     });
 }
 
-module.exports = tokenFactory;
+module.exports = mongodbTokenFactory;

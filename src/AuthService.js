@@ -5,7 +5,6 @@
 'use strict';
 
 const TokensService = require('./tokens/TokensService');
-const tokenFactory = require('./tokens/tokenFactory');
 // const KoaMiddlewareFactory = require('./KoaMiddlewareFactory');
 const Authorizator = require('./authorize/Authorizator');
 const aclResolver = require('./authorize/aclResolver');
@@ -21,10 +20,10 @@ class AuthService {
      *
      * @param {Function} getUserByIdFn
      * @param {TokenStorage} [tokenStorage]
+     * @param {Function} [tokenFactory]
      * @param {Object} [options={}]
      * @param {Object} options.acl
      * @param {Object} options.groups
-     * @param {Function} options.tokenFactory
      * @param {Object} [options.passwordReset]
      * @param {number} [options.passwordReset.tokenExpiresInMinutes]
      * @param {string} options.superGroup
@@ -37,18 +36,13 @@ class AuthService {
     constructor (
             getUserByIdFn,
             tokenStorage,
+            tokenFactory,
             options = {},
             appsProvider = new Map()) {
 
         this._options = options;
 
-        let useTokenFactory = tokenFactory;
-
-        if (typeof this._options.tokenFactory !== 'undefined') {
-            useTokenFactory = this._options.tokenFactory;
-        }
-
-        this.tokensService = new TokensService(tokenStorage, useTokenFactory);
+        this.tokensService = new TokensService(tokenStorage, tokenFactory);
 
         this.getUserByIdFn = getUserByIdFn;
 
