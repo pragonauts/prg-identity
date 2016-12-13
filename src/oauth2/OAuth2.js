@@ -142,6 +142,26 @@ class OAuth2 {
     }
 
     /**
+     * @param {string} authToken - token from signup
+     * @returns {*}
+     */
+    getValidToken (authToken) {
+
+        if (!authToken) {
+            return Promise.reject(createExpiredTokenError());
+        }
+
+        return this.tokenService.getValidToken(authToken, this.tokenType)
+            .then((token) => {
+                if (!token) {
+                    throw createExpiredTokenError();
+                }
+
+                return token;
+            });
+    }
+
+    /**
      * After successful authentication, the oauth code is created
      *
      * @param {string} authToken - token from signup
@@ -153,17 +173,12 @@ class OAuth2 {
      * }, Error>} returns url to redirect
      */
     successfulAuthentication (authToken, userId, domain = null) {
-        if (!authToken) {
-            return Promise.reject(createExpiredTokenError());
-        }
 
         let redirectUri;
         let state;
-        return this.tokenService.getValidToken(authToken, this.tokenType)
+
+        return this.getValidToken(authToken)
             .then((token) => {
-                if (!token) {
-                    throw createExpiredTokenError();
-                }
 
                 redirectUri = token.redirectUri;
                 state = token.state;
