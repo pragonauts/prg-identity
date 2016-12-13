@@ -57,7 +57,7 @@ class OAuth2 {
     /**
      * Creates an instance of Oauth2.
      *
-     * @param {{ createToken: function, getValidToken: function }} tokenService
+     * @param {{ createToken: Function, getValidToken: Function, updateToken: Function }} tokenService
      * @param {Map.<string, {
      *      clientId: string
      *      clientSecret?: string
@@ -145,7 +145,7 @@ class OAuth2 {
      * @param {string} authToken - token from signup
      * @returns {*}
      */
-    getValidToken (authToken) {
+    _getValidToken (authToken) {
 
         if (!authToken) {
             return Promise.reject(createExpiredTokenError());
@@ -158,6 +158,23 @@ class OAuth2 {
                 }
 
                 return token;
+            });
+    }
+
+    extendTokenExpiration (authToken, newExpireAt) {
+
+        if (!authToken) {
+            return Promise.reject(createExpiredTokenError());
+        }
+
+        let tokenPatch = { expireAt: newExpireAt };
+
+        return this.tokenService.updateToken(authToken, tokenPatch)
+            .then((updatedToken) => {
+                if (!updatedToken) {
+                    throw createExpiredTokenError();
+                }
+                return updatedToken;
             });
     }
 
@@ -177,7 +194,7 @@ class OAuth2 {
         let redirectUri;
         let state;
 
-        return this.getValidToken(authToken)
+        return this._getValidToken(authToken)
             .then((token) => {
 
                 redirectUri = token.redirectUri;
@@ -186,9 +203,9 @@ class OAuth2 {
                 return this.userTokenFactory(userId, domain);
             })
             // just for response type == token
-            .then(token => ({
-                url: `${redirectUri}#token=${token.token}&state=${encodeURIComponent(state)}`,
-                token: token.token
+            .then(userToken => ({
+                url: `${redirectUri}#token=${userToken.token}&state=${encodeURIComponent(state)}`,
+                token: userToken.token
             }));
     }
 
