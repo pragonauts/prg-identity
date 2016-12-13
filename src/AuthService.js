@@ -120,10 +120,11 @@ class AuthService {
 
     /**
      * @param {string} userId
+     * @param {Object} [options]
      * @returns {Promise}
      */
-    createPasswordResetToken (userId) {
-        return this._passwordResetter.createToken(userId);
+    createPasswordResetToken (userId, options) {
+        return this._passwordResetter.createToken(userId, options);
     }
 
     /**

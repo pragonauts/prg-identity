@@ -21,14 +21,14 @@ class PasswordResetter {
         }, options);
     }
 
-    createToken (userId) {
+    createToken (userId, options) {
 
         const expireAt = this._getExpireAt();
 
         return this._tokensService.createToken(
             this._tokensService.TYPE_PASSWORD_RESET,
             userId,
-            { expireAt }
+            Object.assign({ expireAt }, options)
         );
     }
 
