@@ -48,8 +48,28 @@ class TokensService {
      * @returns {Promise}
      */
     createToken (type, userIdOrGroups = null, options = {}, length = undefined) {
+
+        try {
+            this._validateTokenOptions(options);
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
         return this.tokenFactory(type, userIdOrGroups, options, length)
             .then(token => this.storage.saveToken(token.id, token).then(() => token));
+    }
+
+    _validateTokenOptions (options) {
+
+        let commonExpireTypos = [
+            'expire', 'expires',
+            'expireIn', 'expiresIn',
+            'expiresAt'
+        ];
+
+        if (commonExpireTypos.some(typo => typeof options[typo] !== 'undefined')) {
+            throw new Error('The common typo detected, use `expireAt` key for token expiration.');
+        }
     }
 
     /**

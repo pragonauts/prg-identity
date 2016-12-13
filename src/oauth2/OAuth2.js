@@ -134,7 +134,7 @@ class OAuth2 {
                     redirectUri: request.redirect_uri,
                     state: request.state,
                     scope: request.scope,
-                    expires: new Date(Date.now() + this.tokenExpiration)
+                    expireAt: new Date(Date.now() + this.tokenExpiration)
                 };
 
                 return this.tokenService.createToken(this.tokenType, null, token);
