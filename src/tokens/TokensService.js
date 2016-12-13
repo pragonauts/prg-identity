@@ -25,7 +25,7 @@ class TokensService {
 
         this.storage = tokenStorage;
 
-        this.tokenFactory = tokenFactory;
+        this.mongodbTokenFactory = tokenFactory;
     }
 
     get TYPE_TOKEN () {
@@ -48,7 +48,7 @@ class TokensService {
      * @returns {Promise}
      */
     createToken (type, userIdOrGroups = null, options = {}, length = undefined) {
-        return this.tokenFactory(type, userIdOrGroups, options, length)
+        return this.mongodbTokenFactory(type, userIdOrGroups, options, length)
             .then(token => this.storage.saveToken(token.id, token).then(() => token));
     }
 

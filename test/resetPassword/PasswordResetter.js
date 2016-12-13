@@ -6,7 +6,7 @@
 
 const PasswordResetter = require('../../src/resetPassword/PasswordResetter');
 const TokensService = require('../../src/tokens/TokensService');
-const tokenFactory = require('../../src/tokens/mongodbTokenFactory');
+const { mongodbTokenFactory } = require('prg-identity-mongo');
 const sinon = require('sinon');
 const assert = require('assert');
 
@@ -18,7 +18,7 @@ describe('PasswordResetter', function () {
         getTokenById: sinon.spy(id => Promise.resolve(_storage[id])),
         saveToken: sinon.spy((id, token) => Promise.resolve(_storage[id] = token)),
         dropTokenById: sinon.spy(id => Promise.resolve(delete _storage[id]))
-    }, tokenFactory);
+    }, mongodbTokenFactory);
 
     beforeEach(() => {
         _storage = {};

@@ -4,13 +4,13 @@
 'use strict';
 
 const assert = require('assert');
-const tokenFactory = require('../../src/tokens/mongodbTokenFactory');
+const { mongodbTokenFactory } = require('prg-identity-mongo');
 
 describe('tokenFactory()', function () {
 
     it('should create token with predefined token', function () {
         const grp = { group: 'grp' };
-        const ret = tokenFactory('type', [grp], { token: '57e05fe00000000000000002abcd' });
+        const ret = mongodbTokenFactory('type', [grp], { token: '57e05fe00000000000000002abcd' });
 
         assert(ret instanceof Promise);
 
@@ -27,7 +27,7 @@ describe('tokenFactory()', function () {
 
     it('should reject invalid tokens', function () {
         const grp = { group: 'grp' };
-        const ret = tokenFactory('type', [grp], { token: '57e05fe0000zz00000000002abcd' });
+        const ret = mongodbTokenFactory('type', [grp], { token: '57e05fe0000zz00000000002abcd' });
 
         assert(ret instanceof Promise);
 
@@ -44,7 +44,7 @@ describe('tokenFactory()', function () {
     });
 
     it('should create token when node is provided', function () {
-        const ret = tokenFactory('type', 456, { });
+        const ret = mongodbTokenFactory('type', 456, { });
 
         assert(ret instanceof Promise);
 

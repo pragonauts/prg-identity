@@ -24,21 +24,6 @@ module.exports = {
 
     UserService,
 
-    UserAccessor,
-
-    get MongoDbTokenStorage () {
-        // lazy load - because of optional dependencies (mongodb)
-        return require('./src/tokens/MongoDbTokenStorage'); // eslint-disable-line global-require
-    },
-
-    get mongodbTokenFactory () {
-        // lazy load - because of optional dependencies (mongodb)
-        return require('./src/tokens/mongodbTokenFactory'); // eslint-disable-line global-require
-    },
-
-    get MongoDbUserStorage () {
-        // lazy load - because of optional dependencies (mongodb)
-        return require('./src/users/MongoDbUserStorage'); // eslint-disable-line global-require
-    }
+    UserAccessor
 
 };
