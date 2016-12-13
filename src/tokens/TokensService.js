@@ -9,9 +9,10 @@ const TOKEN_ID_REGEX = /^[0-9a-f]{24}/;
 
 /**
  * @typedef {{
- *      saveToken: (): Promise
- *      getTokenById: (): Promise.<Object>
- *      dropTokenById: (): Promise
+ *      saveToken: (id, Object): Promise.<Object>
+ *      updateToken: (string, Object): Promise.<Object>
+ *      getTokenById: (string): Promise.<Object>
+ *      dropTokenById: (string): Promise
  * }} TokenStorage
  */
 
@@ -68,7 +69,7 @@ class TokensService {
         ];
 
         if (commonExpireTypos.some(typo => typeof options[typo] !== 'undefined')) {
-            throw new Error('The common typo detected, use `expireAt` key for token expiration.');
+            throw new Error('The common typo detected, use `expireAt` key for the token expiration.');
         }
     }
 
@@ -84,6 +85,24 @@ class TokensService {
         }
 
         return this.storage.dropTokenById(match[0]);
+    }
+
+    updateToken (token, patch) {
+
+        try {
+            this._validateTokenOptions(patch);
+
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
+        const match = token.match(TOKEN_ID_REGEX);
+
+        if (!match) {
+            return Promise.resolve(null);
+        }
+
+        return this.storage.updateToken(match[0], patch);
     }
 
     /**
