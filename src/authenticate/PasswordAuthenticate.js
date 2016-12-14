@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const errors = require('./errors');
 
 const HASH_FIELD = 'passwordHash';
+const IDENTITY_TYPE = 'password';
 
 function _hashPassword (password) {
     return new Promise((resolve, reject) => {
