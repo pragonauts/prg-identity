@@ -1,6 +1,6 @@
 {
   "name": "prg-identity",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Library for user authentication and authorization",
   "main": "index.js",
   "directories": {
