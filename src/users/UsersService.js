@@ -11,7 +11,6 @@ const DEFAULT_CONFIG = {
     adminGroups: null
 };
 
-const AUTHS_FIELD = 'auths';
 const GROUPS_FIELD = 'groups';
 
 class UsersService {
@@ -70,19 +69,25 @@ class UsersService {
             .then(res => res);
     }
 
-    updateUserAuthentication (userId, authentication, withAccessor = null) {
-        return this.storage.upsertUserArrayItem(userId, AUTHS_FIELD, authentication, 'type')
+    /**
+     * @param {string} userId
+     * @param {{ type: string, id?: *, hash?: string }} authentication
+     * @param {UserAccessor} withAccessor
+     * @returns {Promise}
+     */
+    setUserAuthentication (userId, authentication, withAccessor = null) {
+        return this.storage.setUserAuthentication(userId, authentication)
             .then(user => this.formatter(user, withAccessor));
     }
 
-    removeUserAuthentication (userId, authentication, withAccessor = null) {
-        let type = authentication;
-
-        if (typeof authentication === 'string') {
-            type = authentication.type;
-        }
-
-        return this.storage.dropUserArrayItem(userId, AUTHS_FIELD, type, 'type')
+    /**
+     * @param {string} userId
+     * @param {string} type
+     * @param {UserAccessor} withAccessor
+     * @returns {Promise}
+     */
+    removeUserAuthentication (userId, type, withAccessor = null) {
+        return this.storage.removeUserAuthentication(userId, type)
             .then(user => this.formatter(user, withAccessor));
     }
 
