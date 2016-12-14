@@ -57,7 +57,7 @@ class OAuth2 {
     /**
      * Creates an instance of Oauth2.
      *
-     * @param {{ createToken: Function, getValidToken: Function, updateToken: Function }} tokenService
+     * @param {{createToken:Function,getValidToken:Function,updateToken:Function}} tokenService
      * @param {Map.<string, {
      *      clientId: string
      *      clientSecret?: string
@@ -167,7 +167,7 @@ class OAuth2 {
             return Promise.reject(createExpiredTokenError());
         }
 
-        let tokenPatch = { expireAt: newExpireAt };
+        const tokenPatch = { expireAt: newExpireAt };
 
         return this.tokenService.updateToken(authToken, tokenPatch)
             .then((updatedToken) => {

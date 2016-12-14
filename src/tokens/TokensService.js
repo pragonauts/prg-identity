@@ -62,7 +62,7 @@ class TokensService {
 
     _validateTokenOptions (options) {
 
-        let commonExpireTypos = [
+        const commonExpireTypos = [
             'expire', 'expires',
             'expireIn', 'expiresIn',
             'expiresAt'
