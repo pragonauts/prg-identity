@@ -6,7 +6,7 @@
 const bcrypt = require('bcrypt');
 const errors = require('./errors');
 
-const IDENTITY_TYPE = 'password';
+const HASH_FIELD = 'passwordHash';
 
 function _hashPassword (password) {
     return new Promise((resolve, reject) => {
@@ -78,15 +78,15 @@ class PasswordAuthenticate {
     }
 
     verifyPassword (user, password) {
-        const authentication = user.auths
-            .filter(auth => auth.type === IDENTITY_TYPE)[0];
 
-        if (!authentication) {
+        const hash = user[HASH_FIELD];
+
+        if (!hash) {
             return Promise.reject(errors.create(errors.ERR_AUTHORIZATION_METHOD_UNAVAILABLE));
         }
 
         return new Promise((resolve, reject) => {
-            bcrypt.compare(password, authentication.hash, (err, res) => {
+            bcrypt.compare(password, hash, (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
